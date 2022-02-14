@@ -14,7 +14,6 @@ export default function link(scope, elem, attrs, ctrl) {
   var data, panel, dashboard, plot;
   elem = elem.find('.candlestick-panel');
   var $tooltip = $('<div class="graph-tooltip">');
-  var grayColor = '#464c54'; // #c7d0d9
   const hoverEvent = new LegacyGraphHoverEvent({ pos: {}, point: {}, panel: panel });
 
   ctrl.events.on('render', (renderData) => {
@@ -459,19 +458,19 @@ export default function link(scope, elem, attrs, ctrl) {
 
     let seriesItem = function(label, value, color, line) {
       let seriesHtml = '<div class="graph-tooltip-list-item">';
+      let style = '';
+      if (color) {
+        style = ' style="color:' + color + ';" ';
+      }
       if (line) {
         seriesHtml +=
           '<div class="graph-tooltip-series-name">' +
-          '<i class="fa fa-minus" style="color:' +
-          color +
-          ';"></i> ' +
+          '<i class="fa fa-minus"' + style + '></i> ' +
           label +
           ':</div>';
       } else {
         seriesHtml +=
-          '<div class="graph-tooltip-series-name" style="color:' +
-          color +
-          ';">' +
+          '<div class="graph-tooltip-series-name"' + style + '>' +
           label +
           ':</div>';
       }
@@ -506,19 +505,19 @@ export default function link(scope, elem, attrs, ctrl) {
         formatValue(data[3].datapoints[i][0]),
         panel.colorizeTooltip && panel.mode === 'color'
           ? panel.bullColor
-          : grayColor,
+          : null,
         false
       ) +
       seriesItem(
         panel.tooltipOpenLabel || 'Open',
         formatValue(data[0].datapoints[i][0]),
-        grayColor,
+        null,
         false
       ) +
       seriesItem(
         panel.tooltipCloseLabel || 'Close',
         formatValue(data[1].datapoints[i][0]),
-        grayColor,
+        null,
         false
       ) +
       seriesItem(
@@ -526,15 +525,13 @@ export default function link(scope, elem, attrs, ctrl) {
         formatValue(data[2].datapoints[i][0]),
         panel.colorizeTooltip && panel.mode === 'color'
           ? panel.bearColor
-          : grayColor,
+          : null,
         false
       );
 
     if (data.length > 4) {
       body +=
-        '<div style="height: 2px; margin-top: 2px; border-top: solid 1px ' +
-        grayColor +
-        ';"></div>';
+        '<div style="height: 2px; margin-top: 2px; border-top: solid 1px;"></div>';
       let plotData = plot.getData();
       var value;
       for (let j = 4; j < data.length; j++) {
@@ -548,7 +545,7 @@ export default function link(scope, elem, attrs, ctrl) {
         body += seriesItem(
           data[j].alias,
           formatValue(value),
-          data[j].color,
+          null,
           true
         );
       }
