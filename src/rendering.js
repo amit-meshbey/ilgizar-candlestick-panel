@@ -1,18 +1,18 @@
-import _ from "lodash";
-import $ from "jquery";
-import moment from "moment";
-import "jquery.flot";
-import { appEvents } from "app/core/core";
-import "./vendor/jquery_flot_candlestick";
-import "./vendor/jquery_flot_axislabels";
+import _ from 'lodash';
+import $ from 'jquery';
+import moment from 'moment';
+import 'jquery.flot';
+import { appEvents } from 'app/core/core';
+import './vendor/jquery_flot_candlestick';
+import './vendor/jquery_flot_axislabels';
 
 export default function link(scope, elem, attrs, ctrl) {
   var data, panel, dashboard, plot;
-  elem = elem.find(".candlestick-panel");
+  elem = elem.find('.candlestick-panel');
   var $tooltip = $('<div class="graph-tooltip">');
-  var grayColor = "#c8c9ca";
+  var grayColor = '#c8c9ca';
 
-  ctrl.events.on("render", (renderData) => {
+  ctrl.events.on('render', (renderData) => {
     data = renderData || data;
     if (!data) {
       return;
@@ -21,15 +21,15 @@ export default function link(scope, elem, attrs, ctrl) {
     render(false);
   });
 
-  ctrl.events.on("panel-teardown", () => {
+  ctrl.events.on('panel-teardown', () => {
     if (plot) {
       plot.destroy();
       plot = null;
     }
   });
 
-  elem.bind("plotselected", function (event, ranges) {
-    scope.$apply(function () {
+  elem.bind('plotselected', function(event, ranges) {
+    scope.$apply(function() {
       scope.ctrl.timeSrv.setTime({
         from: moment.utc(ranges.xaxis.from),
         to: moment.utc(ranges.xaxis.to),
@@ -37,15 +37,15 @@ export default function link(scope, elem, attrs, ctrl) {
     });
   });
 
-  elem.mouseleave(function () {
+  elem.mouseleave(function() {
     if (plot) {
       clearTooltip();
     }
-    appEvents.emit("graph-hover-clear");
+    appEvents.emit('graph-hover-clear');
   });
 
   appEvents.on(
-    "graph-hover",
+    'graph-hover',
     (evt) => {
       // ignore other graph hover events if shared tooltip is disabled
       if (!dashboard || !dashboard.sharedTooltipModeEnabled()) {
@@ -67,7 +67,7 @@ export default function link(scope, elem, attrs, ctrl) {
   );
 
   appEvents.on(
-    "graph-hover-clear",
+    'graph-hover-clear',
     (event, info) => {
       if (plot) {
         clearTooltip();
@@ -78,7 +78,7 @@ export default function link(scope, elem, attrs, ctrl) {
 
   function setElementHeight() {
     try {
-      elem.css("height", ctrl.height + "px");
+      elem.css('height', ctrl.height + 'px');
 
       return true;
     } catch (e) {
@@ -96,21 +96,21 @@ export default function link(scope, elem, attrs, ctrl) {
       const oneYear = 31536000000;
 
       if (secPerTick <= 45) {
-        return "%H:%M:%S";
+        return '%H:%M:%S';
       }
       if (secPerTick <= 7200 || range <= oneDay) {
-        return "%H:%M";
+        return '%H:%M';
       }
       if (secPerTick <= 80000) {
-        return "%m/%d %H:%M";
+        return '%m/%d %H:%M';
       }
       if (secPerTick <= 2419200 || range <= oneYear) {
-        return "%m/%d";
+        return '%m/%d';
       }
-      return "%Y-%m";
+      return '%Y-%m';
     }
 
-    return "%H:%M";
+    return '%H:%M';
   }
 
   function render_panel() {
@@ -130,21 +130,21 @@ export default function link(scope, elem, attrs, ctrl) {
     let panelWidth = elem.width();
     let panelHeight = elem.height();
 
-    let plotCanvas = $("<div></div>");
+    let plotCanvas = $('<div></div>');
     let plotCss = {
-      top: "10px",
-      left: "0px",
-      margin: "auto",
-      position: "relative",
-      width: panelWidth + "px",
-      height: panelHeight - 20 + "px",
+      top: '10px',
+      left: '0px',
+      margin: 'auto',
+      position: 'relative',
+      width: panelWidth + 'px',
+      height: panelHeight - 20 + 'px',
     };
 
     plotCanvas.css(plotCss);
 
-    const gridColor = "#c8c8c8";
+    const gridColor = '#c8c8c8';
     let lineWidth =
-      panel.widthMode === "auto"
+      panel.widthMode === 'auto'
         ? _.floor(panelWidth / (1.5 * data[0].stats.count))
         : panel.candlestickWidth;
     if (!lineWidth) {
@@ -168,11 +168,11 @@ export default function link(scope, elem, attrs, ctrl) {
         continue;
       }
       data[i].zindex =
-        "zindex" in data[i] && data[i].zindex !== undefined
+        'zindex' in data[i] && data[i].zindex !== undefined
           ? data[i].zindex
           : 0;
       zIndexes[data[i].zindex + 3]++;
-      data[i].yaxis = "yaxis" in data[i] && data[i].yaxis === 2 ? 2 : 1;
+      data[i].yaxis = 'yaxis' in data[i] && data[i].yaxis === 2 ? 2 : 1;
       secondYaxis |= data[i].yaxis === 2;
     }
 
@@ -181,7 +181,7 @@ export default function link(scope, elem, attrs, ctrl) {
         index: 1,
         logBase: 1,
         show: true,
-        position: panel.swapYaxes ? "right" : "left",
+        position: panel.swapYaxes ? 'right' : 'left',
         axisLabel: panel.labelY1,
         min: panel.minY,
         max: panel.maxY,
@@ -192,7 +192,7 @@ export default function link(scope, elem, attrs, ctrl) {
         index: 2,
         logBase: 1,
         show: true,
-        position: panel.swapYaxes ? "left" : "right",
+        position: panel.swapYaxes ? 'left' : 'right',
         axisLabel: panel.labelY2,
       });
     }
@@ -204,7 +204,7 @@ export default function link(scope, elem, attrs, ctrl) {
       series: {
         bars: {
           show: false,
-          align: "left",
+          align: 'left',
         },
         lines: {
           show: false,
@@ -213,15 +213,15 @@ export default function link(scope, elem, attrs, ctrl) {
         candlestick: {
           active: true,
           show: true,
-          lineWidth: lineWidth + "px",
+          lineWidth: lineWidth + 'px',
           rangeWidth: 1,
           rangeColor:
-            panel.mode === "solid" ? panel.solidColor : panel.barColor,
-          upColor: panel.mode === "color" ? panel.bearColor : panel.solidColor,
+            panel.mode === 'solid' ? panel.solidColor : panel.barColor,
+          upColor: panel.mode === 'color' ? panel.bearColor : panel.solidColor,
           downColor:
-            panel.mode === "color" ? panel.bullColor : panel.solidColor,
+            panel.mode === 'color' ? panel.bullColor : panel.solidColor,
           neutralColor:
-            panel.mode === "color" ? panel.dojiColor : panel.solidColor,
+            panel.mode === 'color' ? panel.dojiColor : panel.solidColor,
           drawCandlestick: newDrawCandlestick,
         },
         nearBy: {},
@@ -230,8 +230,8 @@ export default function link(scope, elem, attrs, ctrl) {
       xaxis: {
         timezone: dashboard.getTimezone(),
         show: true,
-        mode: "time",
-        label: "Datetime",
+        mode: 'time',
+        label: 'Datetime',
         min: min,
         max: max,
         ticks: ticks,
@@ -249,11 +249,11 @@ export default function link(scope, elem, attrs, ctrl) {
         labelMarginX: 0,
       },
       selection: {
-        mode: "x",
-        color: "#666",
+        mode: 'x',
+        color: '#666',
       },
       crosshair: {
-        mode: "x",
+        mode: 'x',
       },
     };
 
@@ -275,7 +275,7 @@ export default function link(scope, elem, attrs, ctrl) {
 
     var datas = [];
 
-    var pushData = function (i) {
+    var pushData = function(i) {
       var fill =
         data[i].lines && data[i].lines.fill !== undefined
           ? data[i].lines.fill
@@ -300,7 +300,7 @@ export default function link(scope, elem, attrs, ctrl) {
             data[i].lines && data[i].lines.lineWidth !== undefined
               ? data[i].lines.lineWidth
               : 1,
-          align: "left",
+          align: 'left',
         },
         points: {
           show: data[i].points.show,
@@ -318,7 +318,7 @@ export default function link(scope, elem, attrs, ctrl) {
       });
     };
 
-    var pushIndicators = function (begin, end) {
+    var pushIndicators = function(begin, end) {
       if (data.length > 4) {
         for (var inx = begin + 3; inx <= end + 3; inx++) {
           if (zIndexes[inx] === 0) {
@@ -350,7 +350,7 @@ export default function link(scope, elem, attrs, ctrl) {
         hoverable: true,
       },
       {
-        label: "High",
+        label: 'High',
         data: high,
         lines: {
           show: false,
@@ -363,7 +363,7 @@ export default function link(scope, elem, attrs, ctrl) {
         },
       },
       {
-        label: "Low",
+        label: 'Low',
         data: low,
         lines: {
           show: false,
@@ -383,12 +383,12 @@ export default function link(scope, elem, attrs, ctrl) {
 
     plot = $.plot(plotCanvas, datas, options);
 
-    plotCanvas.bind("plothover", function (event, pos, item) {
+    plotCanvas.bind('plothover', function(event, pos, item) {
       showToolpit(pos);
 
       // broadcast to other graph panels that we are hovering!
       pos.panelRelY = (pos.pageY - elem.offset().top) / elem.height();
-      appEvents.emit("graph-hover", { pos: pos, panel: panel });
+      appEvents.emit('graph-hover', { pos: pos, panel: panel });
     });
   }
 
@@ -405,8 +405,8 @@ export default function link(scope, elem, attrs, ctrl) {
         }
       } else {
         if (
-          typeof data[i].bars === "undefined" ||
-          typeof data[i].bars.show === "undefined" ||
+          typeof data[i].bars === 'undefined' ||
+          typeof data[i].bars.show === 'undefined' ||
           !data[i].bars.show
         ) {
           continue;
@@ -455,7 +455,7 @@ export default function link(scope, elem, attrs, ctrl) {
       }
     }
 
-    let seriesItem = function (label, value, color, line) {
+    let seriesItem = function(label, value, color, line) {
       let seriesHtml = '<div class="graph-tooltip-list-item">';
       if (line) {
         seriesHtml +=
@@ -464,17 +464,17 @@ export default function link(scope, elem, attrs, ctrl) {
           color +
           ';"></i> ' +
           label +
-          ":</div>";
+          ':</div>';
       } else {
         seriesHtml +=
           '<div class="graph-tooltip-series-name" style="color:' +
           color +
           ';">' +
           label +
-          ":</div>";
+          ':</div>';
       }
       seriesHtml +=
-        '<div class="graph-tooltip-value">' + value + "</div></div>";
+        '<div class="graph-tooltip-value">' + value + '</div></div>';
       return seriesHtml;
     };
     const len = data[0].datapoints.length;
@@ -498,31 +498,31 @@ export default function link(scope, elem, attrs, ctrl) {
     let body =
       '<div class="graph-tooltip-time">' +
       absoluteTime +
-      "</div>" +
+      '</div>' +
       seriesItem(
-        panel.tooltipOpenLabel || "Open",
+        panel.tooltipOpenLabel || 'Open',
         formatValue(data[0].datapoints[i][0]),
         grayColor,
         false
       ) +
       seriesItem(
-        panel.tooltipHighLabel || "High",
+        panel.tooltipHighLabel || 'High',
         formatValue(data[3].datapoints[i][0]),
-        panel.colorizeTooltip && panel.mode === "color"
+        panel.colorizeTooltip && panel.mode === 'color'
           ? panel.bullColor
           : grayColor,
         false
       ) +
       seriesItem(
-        panel.tooltipLowLabel || "Low",
+        panel.tooltipLowLabel || 'Low',
         formatValue(data[2].datapoints[i][0]),
-        panel.colorizeTooltip && panel.mode === "color"
+        panel.colorizeTooltip && panel.mode === 'color'
           ? panel.bearColor
           : grayColor,
         false
       ) +
       seriesItem(
-        panel.tooltipCloseLabel || "Close",
+        panel.tooltipCloseLabel || 'Close',
         formatValue(data[1].datapoints[i][0]),
         grayColor,
         false
@@ -556,7 +556,7 @@ export default function link(scope, elem, attrs, ctrl) {
   }
 
   function refreshTooltip() {
-    $($tooltip).css("opacity", panel.transparentTooltip ? 0.75 : 1);
+    $($tooltip).css('opacity', panel.transparentTooltip ? 0.75 : 1);
   }
 
   function clearTooltip() {
@@ -597,7 +597,7 @@ export default function link(scope, elem, attrs, ctrl) {
     drawBody(ctx, serie, data);
 
     function getColor(ctx, serie, data) {
-      if (panel.mode === "color") {
+      if (panel.mode === 'color') {
         if (data[1] === data[2]) {
           return serie.candlestick.neutralColor;
         } else {
@@ -618,12 +618,12 @@ export default function link(scope, elem, attrs, ctrl) {
       ctx.beginPath();
       ctx.strokeStyle = getColor(ctx, serie, data);
       switch (panel.mode) {
-        case "color":
-        case "bar":
+        case 'color':
+        case 'bar':
           ctx.moveTo(x, y1);
           ctx.lineTo(x, y2);
           break;
-        case "solid":
+        case 'solid':
           let y3 = serie.yaxis.p2c(data[1]);
           let y4 = serie.yaxis.p2c(data[2]);
           ctx.moveTo(x, y1);
@@ -640,18 +640,18 @@ export default function link(scope, elem, attrs, ctrl) {
       let x = serie.xaxis.p2c(data[0]) + half;
       let y1 = serie.yaxis.p2c(data[1]);
       let y2 = serie.yaxis.p2c(data[2]);
-      if (data[1] === data[2] && panel.mode !== "bar") {
+      if (data[1] === data[2] && panel.mode !== 'bar') {
         y2 = y1 + 1;
       }
       ctx.beginPath();
       ctx.strokeStyle = getColor(ctx, serie, data);
       switch (panel.mode) {
-        case "color":
+        case 'color':
           ctx.lineWidth = serie.candlestick.barWidth;
           ctx.moveTo(x, y1);
           ctx.lineTo(x, y2);
           break;
-        case "solid":
+        case 'solid':
           ctx.moveTo(x, y1);
           if (data[1] >= data[2]) {
             ctx.lineWidth = serie.candlestick.barWidth;
@@ -665,7 +665,7 @@ export default function link(scope, elem, attrs, ctrl) {
             ctx.lineTo(x, y1);
           }
           break;
-        case "bar":
+        case 'bar':
           ctx.lineWidth = serie.candlestick.rangeWidth;
           ctx.moveTo(x - half, y1);
           ctx.lineTo(x, y1);
