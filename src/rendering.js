@@ -500,12 +500,6 @@ export default function link(scope, elem, attrs, ctrl) {
       absoluteTime +
       '</div>' +
       seriesItem(
-        panel.tooltipOpenLabel || 'Open',
-        formatValue(data[0].datapoints[i][0]),
-        grayColor,
-        false
-      ) +
-      seriesItem(
         panel.tooltipHighLabel || 'High',
         formatValue(data[3].datapoints[i][0]),
         panel.colorizeTooltip && panel.mode === 'color'
@@ -514,17 +508,23 @@ export default function link(scope, elem, attrs, ctrl) {
         false
       ) +
       seriesItem(
-        panel.tooltipLowLabel || 'Low',
-        formatValue(data[2].datapoints[i][0]),
-        panel.colorizeTooltip && panel.mode === 'color'
-          ? panel.bearColor
-          : grayColor,
+        panel.tooltipOpenLabel || 'Open',
+        formatValue(data[0].datapoints[i][0]),
+        grayColor,
         false
       ) +
       seriesItem(
         panel.tooltipCloseLabel || 'Close',
         formatValue(data[1].datapoints[i][0]),
         grayColor,
+        false
+      ) +
+      seriesItem(
+        panel.tooltipLowLabel || 'Low',
+        formatValue(data[2].datapoints[i][0]),
+        panel.colorizeTooltip && panel.mode === 'color'
+          ? panel.bearColor
+          : grayColor,
         false
       );
 

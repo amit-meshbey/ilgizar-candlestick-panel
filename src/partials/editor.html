@@ -201,20 +201,6 @@
       </span>
     </div>
     <div class="gf-form">
-      <label class="gf-form-label width-9">Open label</label>
-      <span class="max-width-12">
-        <input
-          type="text"
-          class="input-medium gf-form-input max-width-5"
-          ng-model="ctrl.panel.tooltipOpenLabel"
-          placeholder="none"
-          empty-to-null
-          ng-change="ctrl.render()"
-          ng-model-onblur
-        />
-      </span>
-    </div>
-    <div class="gf-form">
       <label class="gf-form-label width-9">High label</label>
       <span class="max-width-12">
         <input
@@ -229,12 +215,12 @@
       </span>
     </div>
     <div class="gf-form">
-      <label class="gf-form-label width-9">Low label</label>
+      <label class="gf-form-label width-9">Open label</label>
       <span class="max-width-12">
         <input
           type="text"
           class="input-medium gf-form-input max-width-5"
-          ng-model="ctrl.panel.tooltipLowLabel"
+          ng-model="ctrl.panel.tooltipOpenLabel"
           placeholder="none"
           empty-to-null
           ng-change="ctrl.render()"
@@ -249,6 +235,20 @@
           type="text"
           class="input-medium gf-form-input max-width-5"
           ng-model="ctrl.panel.tooltipCloseLabel"
+          placeholder="none"
+          empty-to-null
+          ng-change="ctrl.render()"
+          ng-model-onblur
+        />
+      </span>
+    </div>
+    <div class="gf-form">
+      <label class="gf-form-label width-9">Low label</label>
+      <span class="max-width-12">
+        <input
+          type="text"
+          class="input-medium gf-form-input max-width-5"
+          ng-model="ctrl.panel.tooltipLowLabel"
           placeholder="none"
           empty-to-null
           ng-change="ctrl.render()"
