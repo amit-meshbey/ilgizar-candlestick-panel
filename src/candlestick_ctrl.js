@@ -1,13 +1,12 @@
-import {MetricsPanelCtrl} from 'app/plugins/sdk';
-import _ from 'lodash';
-import kbn from 'app/core/utils/kbn';
-import TimeSeries from 'app/core/time_series';
-import rendering from './rendering';
-import colors from './colors';
-import appEvents from 'app/core/app_events';
+import { MetricsPanelCtrl } from "app/plugins/sdk";
+import _ from "lodash";
+import kbn from "app/core/utils/kbn";
+import TimeSeries from "app/core/time_series";
+import rendering from "./rendering";
+import colors from "./colors";
+import appEvents from "app/core/app_events";
 
 export class CandleStickCtrl extends MetricsPanelCtrl {
-
   constructor($scope, $injector, $rootScope) {
     super($scope, $injector);
     this.$rootScope = $rootScope;
@@ -15,16 +14,16 @@ export class CandleStickCtrl extends MetricsPanelCtrl {
 
     let panelDefaults = {
       datasource: null,
-      mode: 'color',
-      widthMode: 'auto',
+      mode: "color",
+      widthMode: "auto",
       maxDataPoints: 80,
       candlestickWidth: 9,
 
-      bullColor: '#26ff42',
-      bearColor: '#ff4a3a',
-      dojiColor: '#c8c9ca',
-      solidColor: '#000000',
-      barColor: '#000000',
+      bullColor: "#26ff42",
+      bearColor: "#ff4a3a",
+      dojiColor: "#c8c9ca",
+      solidColor: "#000000",
+      barColor: "#000000",
 
       swapYaxes: true,
       labelY1: null,
@@ -32,23 +31,28 @@ export class CandleStickCtrl extends MetricsPanelCtrl {
 
       colorizeTooltip: true,
       transparentTooltip: false,
-      tooltipFormat: 'YYYY-MM-DD HH:mm:ss',
+      tooltipFormat: "YYYY-MM-DD HH:mm:ss",
+
+      tooltipOpenLabel: null,
+      tooltipHighLabel: null,
+      tooltipLowLabel: null,
+      tooltipCloseLabel: null,
 
       indicators: [],
     };
 
     _.defaults(this.panel, panelDefaults);
 
-    this.events.on('render', this.onRender.bind(this));
-    this.events.on('data-received', this.onDataReceived.bind(this));
-    this.events.on('data-error', this.onDataError.bind(this));
-    this.events.on('data-snapshot-load', this.onDataReceived.bind(this));
-    this.events.on('init-edit-mode', this.onInitEditMode.bind(this));
+    this.events.on("render", this.onRender.bind(this));
+    this.events.on("data-received", this.onDataReceived.bind(this));
+    this.events.on("data-error", this.onDataError.bind(this));
+    this.events.on("data-snapshot-load", this.onDataReceived.bind(this));
+    this.events.on("init-edit-mode", this.onInitEditMode.bind(this));
     this.seriesToAlias();
   }
 
   seriesToAlias() {
-    if (typeof(this.panel.open) !== 'object') {
+    if (typeof this.panel.open !== "object") {
       return;
     }
     let value = this.panel.open.alias;
@@ -65,8 +69,16 @@ export class CandleStickCtrl extends MetricsPanelCtrl {
   }
 
   onInitEditMode() {
-    this.addEditorTab('Options', 'public/plugins/ilgizar-candlestick-panel/partials/editor.html', 2);
-    this.addEditorTab('Indicators', 'public/plugins/ilgizar-candlestick-panel/partials/indicators.html', 3);
+    this.addEditorTab(
+      "Options",
+      "public/plugins/ilgizar-candlestick-panel/partials/editor.html",
+      2
+    );
+    this.addEditorTab(
+      "Indicators",
+      "public/plugins/ilgizar-candlestick-panel/partials/indicators.html",
+      3
+    );
   }
 
   setUnitFormat(subItem) {
@@ -94,15 +106,14 @@ export class CandleStickCtrl extends MetricsPanelCtrl {
   }
 
   parseSeries(series) {
-
     if (series === undefined) {
       return series;
     }
     // series must contain aliased datapoints
     // open, high, low, and close, otherwise
     // do not parse any further.
-    const keys = ['open', 'high', 'low', 'close'];
-    if (series.filter(dp => (keys.indexOf(dp.alias) > -1)).length < 4) {
+    const keys = ["open", "high", "low", "close"];
+    if (series.filter((dp) => keys.indexOf(dp.alias) > -1).length < 4) {
       return [];
     }
 
@@ -111,16 +122,16 @@ export class CandleStickCtrl extends MetricsPanelCtrl {
     for (let i = 0; i < series.length; i++) {
       if (series[i] !== undefined) {
         switch (series[i].alias) {
-          case 'open':
+          case "open":
             result[0] = series[i];
             break;
-          case 'close':
+          case "close":
             result[1] = series[i];
             break;
-          case 'low':
+          case "low":
             result[2] = series[i];
             break;
-          case 'high':
+          case "high":
             result[3] = series[i];
             break;
           default:
@@ -173,7 +184,7 @@ export class CandleStickCtrl extends MetricsPanelCtrl {
             alias: this.series[i].alias,
             color: colors[index % colors.length],
             linewidth: 1,
-            fill: 0
+            fill: 0,
           };
         }
         this.series[i].color = this.panel.seriesOverrides[index].color;
@@ -204,4 +215,4 @@ export class CandleStickCtrl extends MetricsPanelCtrl {
   }
 }
 
-CandleStickCtrl.templateUrl = 'partials/module.html';
+CandleStickCtrl.templateUrl = "partials/module.html";
