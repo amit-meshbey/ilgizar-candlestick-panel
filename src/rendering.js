@@ -259,7 +259,20 @@ export default function link(scope, elem, attrs, ctrl) {
       high = [],
       low = [];
 
+    let delta = null;
+
     for (i = 0; i < data[0].data.length; i++) {
+      if (!delta && i === 1) {
+        delta = data[0].data[i][0] - data[0].data[i - 1][0];
+      }
+      if (delta && i === data[0].data.length - 1) {
+        if (new Date().valueOf() - data[0].data[i][0] < delta / 2) {
+          continue;
+        }
+      }
+      if (!data[0].data[i][1] || !data[1].data[i][1] || !data[2].data[i][1] || !data[3].data[i][1]) {
+        continue;
+      }
       candleData.push([
         data[0].data[i][0],
         data[0].data[i][1],
