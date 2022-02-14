@@ -28,6 +28,8 @@ export class CandleStickCtrl extends MetricsPanelCtrl {
       swapYaxes: true,
       labelY1: null,
       labelY2: null,
+      minY: null,
+      maxY: null,
 
       colorizeTooltip: true,
       transparentTooltip: false,

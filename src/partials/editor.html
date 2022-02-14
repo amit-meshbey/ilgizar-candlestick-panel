@@ -141,6 +141,34 @@
         />
       </span>
     </div>
+    <div class="gf-form">
+      <label class="gf-form-label width-9">Max</label>
+      <span class="max-width-12">
+        <input
+          type="number"
+          class="input-medium gf-form-input max-width-5"
+          ng-model="ctrl.panel.maxY"
+          placeholder="auto"
+          empty-to-null
+          ng-change="ctrl.refresh()"
+          ng-model-onblur
+        />
+      </span>
+    </div>
+    <div class="gf-form">
+      <label class="gf-form-label width-9">Min</label>
+      <span class="max-width-12">
+        <input
+          type="number"
+          class="input-medium gf-form-input max-width-5"
+          ng-model="ctrl.panel.minY"
+          placeholder="auto"
+          empty-to-null
+          ng-change="ctrl.refresh()"
+          ng-model-onblur
+        />
+      </span>
+    </div>
   </div>
 
   <div class="section gf-form-group">

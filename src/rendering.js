@@ -118,7 +118,7 @@ export default function link(scope, elem, attrs, ctrl) {
 
     data = ctrl.data;
 
-    // return "no data points" when datapoints are not loaded.
+    // return 'no data points' when datapoints are not loaded.
     if (data.length < 4) {
       $(elem).empty();
       $(
@@ -183,6 +183,8 @@ export default function link(scope, elem, attrs, ctrl) {
         show: true,
         position: panel.swapYaxes ? "right" : "left",
         axisLabel: panel.labelY1,
+        min: panel.minY,
+        max: panel.maxY,
       },
     ];
     if (secondYaxis) {
